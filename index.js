@@ -1,6 +1,13 @@
-const linebot = require('./bot.js');
+const linebot = require('linebot');
 const express = require('express');
+var request = require("request")
 const bodyParser = require('body-parser');
+
+const AQI_URL = "http://opendata2.epa.gov.tw/AQI.json";
+const SITE_NAME = '西屯';
+
+var events = require('events'); 
+var emitter = new events.EventEmitter(); 
 
 const bot = linebot({
 	channelId: process.env.CHANNEL_ID,
@@ -9,6 +16,27 @@ const bot = linebot({
 });
 
 const app = express();
+app.set('view engine', 'ejs');
+
+function getAQI() {
+    request({
+        url: AQI_URL,
+        json: true
+    }, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            let data;
+            
+            for (i in body) {
+                if (body[i].SiteName == SITE_NAME) {
+                    data = body[i];
+                    break;
+                }
+            }
+
+            emitter.emit('aqiEvent', data);  // 發出aqiEvent事件
+        }
+    });
+}
 
 const parser = bodyParser.json({
 	verify: function (req, res, buf, encoding) {
@@ -17,7 +45,11 @@ const parser = bodyParser.json({
 });
 
 app.get('/', function(req, res){
-	res.send("<h1>hello world!</h1>");
+	//res.send("<h1>hello world!</h1>");
+	getAQI();
+    emitter.on ('aqiEvent', function (data) {
+        res.render('index', {AQI:data});
+    })
 })
 
 app.post('/linewebhook', parser, function (req, res) {
