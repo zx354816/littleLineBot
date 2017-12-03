@@ -18,7 +18,15 @@ const bot = linebot({
 const app = express();
 app.set('view engine', 'ejs');
 
-function getAQI() {
+const parser = bodyParser.json({
+	verify: function (req, res, buf, encoding) {
+		req.rawBody = buf.toString(encoding);
+	}
+});
+
+app.get('/',function(req,res){
+    let json;
+
     request({
         url: AQI_URL,
         json: true
@@ -33,24 +41,11 @@ function getAQI() {
                 }
             }
 
-            emitter.emit('aqiEvent', data);  // 發出aqiEvent事件
+            res.render('index', {AQI:data});
+            console.log(body.length) // Print the json response
         }
     });
-}
-
-const parser = bodyParser.json({
-	verify: function (req, res, buf, encoding) {
-		req.rawBody = buf.toString(encoding);
-	}
 });
-
-app.get('/', function(req, res){
-	//res.send("<h1>hello world!</h1>");
-	getAQI();
-    emitter.on ('aqiEvent', function (data) {
-        res.render('index', {AQI:data});
-    })
-})
 
 app.post('/linewebhook', parser, function (req, res) {
 	if (!bot.verify(req.rawBody, req.get('X-Line-Signature'))) {
