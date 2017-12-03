@@ -1,6 +1,6 @@
 const linebot = require('linebot');
 const express = require('express');
-//var request = require("request")
+var request = require("request")
 const bodyParser = require('body-parser');
 
 const AQI_URL = "http://opendata2.epa.gov.tw/AQI.json";
@@ -16,7 +16,8 @@ const bot = linebot({
 });
 
 const app = express();
-//app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
 const parser = bodyParser.json({
 	verify: function (req, res, buf, encoding) {
@@ -25,25 +26,24 @@ const parser = bodyParser.json({
 });
 
 app.get('/',function(req,res){
-	res.send("hello world!");
-    // request({
-    //     url: AQI_URL,
-    //     json: true
-    // }, function (error, response, body) {
-    //     if (!error && response.statusCode === 200) {
-    //         let data;
+	//res.send("hello world!");
+    request({
+        url: AQI_URL,
+        json: true
+    }, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            let data;
             
-    //         for (i in body) {
-    //             if (body[i].SiteName == SITE_NAME) {
-    //                 data = body[i];
-    //                 break;
-    //             }
-    //         }
+            for (i in body) {
+                if (body[i].SiteName == SITE_NAME) {
+                    data = body[i];
+                    break;
+                }
+            }
 
-    //         res.render('index', {AQI:data});
-    //         console.log(body.length) // Print the json response
-    //     }
-    // });
+            res.render('index', {AQI:data});
+        }
+    });
 });
 
 app.post('/linewebhook', parser, function (req, res) {
