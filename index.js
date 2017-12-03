@@ -81,8 +81,8 @@ bot.on('message', function (event) {
 					getAQI();
 					emitter.on ('aqiEvent', function (data) {
 						event.reply('\uDBC0\uDC84 ' + data.County + data.SiteName +
-						'\nPM2.5指數：'+ data["PM2.5_AVG"] + 
-					    '\n狀態：' + data.Status);
+						'<br><br>PM2.5指數：'+ data["PM2.5_AVG"] + 
+					    '<br>狀態：<b>' + data.Status + '</b>');
 					});
 					break;
 				case 'Picture':
