@@ -44,7 +44,7 @@ app.get('/',function(req,res){
     })
     .catch(function (err) {
 		// API call failed...
-		res.send("error...")
+		res.send("error...");
     });
 });
 
