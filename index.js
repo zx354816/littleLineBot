@@ -6,27 +6,10 @@ const bodyParser = require('body-parser');
 const AQI_URL = "http://opendata2.epa.gov.tw/AQI.json";
 const SITE_NAME = '西屯';
 
-//var events = require('events'); 
-//var emitter = new events.EventEmitter(); 
+var events = require('events'); 
+var emitter = new events.EventEmitter(); 
 
-const bot = linebot({
-	channelId: process.env.CHANNEL_ID,
-	channelSecret: process.env.CHANNEL_SECRET,
-	channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
-});
-
-const app = express();
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
-const parser = bodyParser.json({
-	verify: function (req, res, buf, encoding) {
-		req.rawBody = buf.toString(encoding);
-	}
-});
-
-app.get('/',function(req,res){
-	//res.send("hello world!");
+function getAQI() {
     request({
         url: AQI_URL,
         json: true
@@ -41,9 +24,31 @@ app.get('/',function(req,res){
                 }
             }
 
-            res.render('index', {AQI:data});
+            emitter.emit('aqiEvent', data); 
         }
     });
+}
+
+const bot = linebot({
+	channelId: process.env.CHANNEL_ID,
+	channelSecret: process.env.CHANNEL_SECRET,
+	channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
+});
+
+const app = express();
+app.set('view engine', 'ejs');
+
+const parser = bodyParser.json({
+	verify: function (req, res, buf, encoding) {
+		req.rawBody = buf.toString(encoding);
+	}
+});
+
+app.get('/',function(req,res){
+    getAQI();
+    emitter.on ('aqiEvent', function (data) {
+        res.render('index', {AQI:data});
+    })
 });
 
 app.post('/linewebhook', parser, function (req, res) {
