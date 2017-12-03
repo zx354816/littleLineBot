@@ -1,4 +1,4 @@
-const linebot = require('bot.js');
+const linebot = require('./bot.js');
 const express = require('express');
 const bodyParser = require('body-parser');
 

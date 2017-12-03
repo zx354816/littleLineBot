@@ -1,4 +1,4 @@
-const linebot = require('bot.js');
+const linebot = require('./bot.js');
 
 const bot = linebot({
 	channelId: process.env.CHANNEL_ID,
