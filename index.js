@@ -1,6 +1,5 @@
 const linebot = require('linebot');
 const express = require('express');
-var expressLayouts = require('express-ejs-layouts');
 var request = require("request")
 const bodyParser = require('body-parser');
 
@@ -19,7 +18,6 @@ const bot = linebot({
 const app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-app.use(expressLayouts);
 
 const parser = bodyParser.json({
 	verify: function (req, res, buf, encoding) {
