@@ -1,32 +1,25 @@
 const linebot = require('linebot');
 const express = require('express');
-var request = require("request")
+var rp = require('request-promise');
 const bodyParser = require('body-parser');
 
-const AQI_URL = "http://opendata2.epa.gov.tw/AQI.json";
 const SITE_NAME = '西屯';
+var aqiOpt = {
+    uri: "http://opendata2.epa.gov.tw/AQI.json",
+    json: true // Automatically parses the JSON string in the response
+}; 
 
-var events = require('events'); 
-var emitter = new events.EventEmitter(); 
-
-function getAQI() {
-    request({
-        url: AQI_URL,
-        json: true
-    }, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            let data;
-            
-            for (i in body) {
-                if (body[i].SiteName == SITE_NAME) {
-                    data = body[i];
-                    break;
-                }
-            }
-
-            emitter.emit('aqiEvent', data); 
+function readAQI(repos){
+    let data;
+    
+    for (i in repos) {
+        if (repos[i].SiteName == SITE_NAME) {
+            data = repos[i];
+            break;
         }
-    });
+    }
+
+    return data;
 }
 
 const bot = linebot({
@@ -45,10 +38,14 @@ const parser = bodyParser.json({
 });
 
 app.get('/',function(req,res){
-    getAQI();
-    emitter.on ('aqiEvent', function (data) {
-        res.render('index', {AQI:data});
+    rp(aqiOpt)
+    .then(function (repos) {
+        res.render('index', {AQI:readAQI(repos)});
     })
+    .catch(function (err) {
+		// API call failed...
+		res.send("error...")
+    });
 });
 
 app.post('/linewebhook', parser, function (req, res) {
@@ -78,11 +75,16 @@ bot.on('message', function (event) {
 					});
 					break;
 				case '空氣':
-					getAQI();
-					emitter.on ('aqiEvent', function (data) {
+					let data;
+					rp(aqiOpt)
+					.then(function (repos) {
+						data = readAQI(repos);
 						event.reply('\uDBC0\uDC84 ' + data.County + data.SiteName +
-						'<br><br>PM2.5指數：'+ data["PM2.5_AVG"] + 
-					    '<br>狀態：<b>' + data.Status + '</b>');
+						'\n\nPM2.5指數：'+ data["PM2.5_AVG"] + 
+					    '\n狀態：' + data.Status);
+					})
+					.catch(function (err) {
+						event.reply('\uDBC0\uDC84 ' + "接收空氣品質資料時發生問題了～");
 					});
 					break;
 				case 'Picture':
