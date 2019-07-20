@@ -29,6 +29,9 @@ var FoodList = ['711', '弘爺', '酷比食堂', '彭彭炒飯', 'ㄓㄠˇ餐吃
 bot.on('join',     function (event) { 
 	event.reply("大家好，可以內射我 想得美臭肥宅^^");
 });
+bot.on('leave',     function (event) { 
+	event.reply("踢屁ㄛ");
+});
 
 bot.on('message', function (event) {
 	if (event.message.text.match('吃啥') || event.message.text.match('吃什麼') || event.message.text.match('吃甚麼') != null) {
