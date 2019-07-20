@@ -12,8 +12,8 @@ const app = express();
 
 const linebotParser = bot.parser();
 
-app.get('/',function(req,res){
-    res.send('Hello World!');
+app.get('/', function (req, res) {
+	res.send('Hello World!');
 });
 
 app.post('/linewebhook', linebotParser);
@@ -25,7 +25,7 @@ function limitRandomNumber(n, m) {
 }
 
 
-var FoodList = ['711','弘爺','酷比食堂','彭彭炒飯','ㄓㄠˇ餐吃了沒','學府牛肉麵','麥當勞','肯德基','老二'];
+var FoodList = ['711', '弘爺', '酷比食堂', '彭彭炒飯', 'ㄓㄠˇ餐吃了沒', '學府牛肉麵', '麥當勞', '肯德基', '老二'];
 
 
 
