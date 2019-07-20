@@ -25,19 +25,12 @@ function limitRandomNumber(n, m) {
 }
 
 
-var FoodList = ['711','弘爺'];
+var FoodList = ['711','弘爺','酷比食堂','彭彭炒飯','ㄓㄠˇ餐吃了沒'];
 
 
 
 bot.on('message', function (event) {
 	if (event.message.text.match('吃啥') || event.message.text.match('吃什麼') || event.message.text.match('吃甚麼') != null) {
-		fs.readFile('food.txt', function (err, data) {
-			if (err) throw err;
-		 
-			
-			FoodList = data.toString().split(',');
-		});
-
 
 
 		var ListLength = FoodList.length;
@@ -64,7 +57,6 @@ bot.on('message', function (event) {
 				console.log('error');
 			});
 
-			
 		}
 		else {
 			event.reply('裡面已經有這個了啦').then(function (data) {
@@ -111,6 +103,10 @@ bot.on('message', function (event) {
 			// error 
 			console.log('error');
 		});
+	}
+	else if (event.message.text == 'Admin') {
+		var ForMeToTestRestaurant = '\'' + FoodList.join('\',\'').toString() + '\''; //把全部的餐廳變成我要的格式
+		event.reply(ForMeToTestRestaurant);
 	}
 });
 
