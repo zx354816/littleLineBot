@@ -25,7 +25,7 @@ function limitRandomNumber(n, m) {
 }
 
 
-var FoodList = ['711', '弘爺', '酷比食堂', '彭彭炒飯', 'ㄓㄠˇ餐吃了沒', '學府牛肉麵', '麥當勞', '肯德基', '老二'];
+var FoodList = ['711', '弘爺', '酷比食堂', '彭彭炒飯', 'ㄓㄠˇ餐吃了沒', '學府牛肉麵', '麥當勞', '肯德基', '老二','手'];
 
 
 
@@ -41,7 +41,7 @@ bot.on('message', function (event) {
 			// error 
 			console.log('error');
 		});
-		
+
 	}
 	else if (event.message.text.match('新增餐廳:') != null || event.message.text.match('新增餐廳：') != null) {
 
