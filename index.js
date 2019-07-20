@@ -35,7 +35,7 @@ bot.on('message', function (event) {
 			if (err) throw err;
 		 
 			
-			FoodList = data.split(',');
+			FoodList = data.toString().split(',');
 		});
 
 
