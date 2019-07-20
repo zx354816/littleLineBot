@@ -26,7 +26,9 @@ function limitRandomNumber(n, m) {
 
 var FoodList = ['711', '弘爺', '酷比食堂', '彭彭炒飯', 'ㄓㄠˇ餐吃了沒', '學府牛肉麵', '麥當勞', '肯德基','老二','手'];
 
-
+bot.on('join',     function (event) { 
+	event.reply("大家好，可以內射我 想得美臭肥宅^^");
+});
 
 bot.on('message', function (event) {
 	if (event.message.text.match('吃啥') || event.message.text.match('吃什麼') || event.message.text.match('吃甚麼') != null) {
