@@ -34,12 +34,12 @@ bot.on('message', function (event) {
 		fs.readFile('food.txt', function (err, data) {
 			if (err) throw err;
 		 
-			console.log(data.toString());
-			FoodList = data.toString();
+			
+			FoodList = data.split(',');
 		});
 
 
-		
+
 		var ListLength = FoodList.length;
 		event.reply(FoodList[limitRandomNumber(0, ListLength - 1)]).then(function (data) {
 			// success 
