@@ -1,6 +1,5 @@
 const linebot = require('linebot');
 const express = require('express');
-const fs = require("fs");
 
 const bot = linebot({
 	channelId: process.env.CHANNEL_ID,
@@ -25,7 +24,7 @@ function limitRandomNumber(n, m) {
 }
 
 
-var FoodList = ['711', '弘爺', '酷比食堂', '彭彭炒飯', 'ㄓㄠˇ餐吃了沒', '學府牛肉麵', '麥當勞', '肯德基', '老二','手'];
+var FoodList = ['711', '弘爺', '酷比食堂', '彭彭炒飯', 'ㄓㄠˇ餐吃了沒', '學府牛肉麵', '麥當勞', '肯德基','老二','手'];
 
 
 
