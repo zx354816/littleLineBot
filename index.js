@@ -24,12 +24,13 @@ function limitRandomNumber(n, m) {
 }
 
 
-var FoodList = ['弘爺','酷比食堂','彭彭炒飯','ㄓㄠˇ餐吃了沒','學府牛肉麵','麥當勞','肯德基','老二','大碗公','鴨香意麵','八方雲集','臭鮑魚','活魚','三兄弟燒烤','開源社'];
+var FoodList = ['弘爺', '酷比食堂', '彭彭炒飯', 'ㄓㄠˇ餐吃了沒', '學府牛肉麵', '麥當勞', '肯德基',
+	'老二', '大碗公', '鴨香意麵', '八方雲集', '臭鮑魚', '活魚', '三兄弟燒烤', '開源社'];
 
-bot.on('join',     function (event) { 
+bot.on('join', function (event) {
 	event.reply("大家好，可以內射我 想得美臭肥宅^^");
 });
-bot.on('leave',     function (event) { 
+bot.on('leave', function (event) {
 	event.reply("踢屁ㄛ");
 });
 
