@@ -1,0 +1,25 @@
+import base64
+
+
+cipher="dGgxcywxcyw0LGMxcGhlcix0ZXh0ISEh"
+
+s1="ABCDEFGHIJKLMNOPQRTUVWXYZabcdefghijklmnopqrtuvwxyz"
+s2="1234567890"
+
+ans=""
+
+for R1 in range(0,100):
+    for R2 in range(0,100):
+        for i in range( len(cipher) ):
+            if(cipher[i].isalpha()):
+                #ans+= 某個算式
+                ans += s1[  (s1.find(cipher[i])+R1)%52  ]
+                print("s1:" , (s1.find(cipher[i])+R1)%52 )
+            elif(cipher[i].isdigit()):
+                #ans+= 某個算式
+                ans += s2[  (s2.find(cipher[i])+R1+R2)%10  ]
+                print("s2:" , (s2.find(cipher[i])+R1+R2)%10  )
+            else :
+                print("HI")
+        print(ans)
+        ans=""
